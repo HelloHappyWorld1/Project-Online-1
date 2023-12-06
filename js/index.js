@@ -24,11 +24,11 @@ function saveAsImage() {
             context.textAlign = 'center';
             const centerX = newCanvas.width / 2;
             const centerY = newCanvas.height - 15;
-            context.fillText(text, centerX, centerY);
             
             const image = new Image(); 
             image.onload = function() {
-                context.drawImage(image, 0, 0, canvas.width, canvas.height); // 將圖片繪製在整個畫布上
+                context.drawImage(image, 0, 0, canvas.width, canvas.height); // 繪製圖片在整個畫布上
+                context.fillText(text, centerX, centerY); // 繪製文字在畫布中央
                 var imageData = newCanvas.toDataURL("image/png");
                 var a = document.createElement('a');
                 a.href = imageData;
