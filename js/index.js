@@ -9,30 +9,41 @@ let roundCount = 0;
 let attackPower = 25;
 let returnCost = 0;
 
-function saveTextAsImage() {
-    var newCanvas = document.createElement("canvas");
-    var context = newCanvas.getContext('2d');
-    newCanvas.width = 400; // 調整成你想要的畫布寬度
-    newCanvas.height = 200; // 調整成你想要的畫布高度
-    
-    const text = "我在2027守衛台灣，堅持了${roundCount}天，全臺排名" + `${Math.random()},守衛台灣需要你！`;
-    context.font = '20px Arial';
-    context.fillStyle = 'black';
-    context.textAlign = 'center';
-    const centerX = newCanvas.width / 2;
-    const centerY = newCanvas.height - 15;
-    
-    // 繪製文字到畫布上
-    context.fillText(text, centerX, centerY); // 繪製文字在畫布中央
-    
-    // 將畫布保存為圖片
-    var imageData = newCanvas.toDataURL("image/png");
-    var a = document.createElement('a');
-    a.href = imageData;
-    a.download = 'text_screenshot.png';      
-    document.body.appendChild(a);
-    a.click();   
-    document.body.removeChild(a);
+function saveAsImage() {
+    var element = document.getElementById('forScreenShot');
+    element.addEventListener('click', function () {
+        html2canvas(element).then(function (canvas) {
+            var newCanvas = document.createElement("canvas");
+            var context = newCanvas.getContext('2d');
+            newCanvas.width = canvas.width;
+            newCanvas.height = canvas.height;
+            
+            const text = "我在2027守衛台灣，堅持了${roundCount}天，全臺排名" + `${Math.random()},守衛台灣需要你！`;
+            context.font = '20px Arial';
+            context.fillStyle = 'black';
+            context.textAlign = 'center';
+            const centerX = newCanvas.width / 2;
+            const centerY = newCanvas.height - 15;
+            
+            const image = new Image(); 
+            image.onload = function() {
+                context.drawImage(image, 0, 0, canvas.width, canvas.height); // 繪製圖片在整個畫布上
+                
+                // 在圖片繪製完成後再繪製文字
+                context.fillText(text, centerX, centerY); // 繪製文字在畫布中央
+                
+                var imageData = newCanvas.toDataURL("image/png");
+                var a = document.createElement('a');
+                a.href = imageData;
+                a.download = 'page_screenshot.png';      
+                document.body.appendChild(a);
+                a.click();   
+                document.body.removeChild(a);
+            };
+            image.src = 'img/share.png';
+            //image.crossOrigin = "Anonymous";   
+        });
+    });
 }
 
 
