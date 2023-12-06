@@ -18,7 +18,7 @@ function saveAsImage() {
             newCanvas.width = canvas.width;
             newCanvas.height = canvas.height;
 
-            const level = 50; // Assuming you have a variable 'level' defined
+            //const level = 50; // Assuming you have a variable 'level' defined
 
             context.drawImage(canvas, 0, 0); // Draw the original canvas onto the new canvas
 
@@ -28,7 +28,7 @@ function saveAsImage() {
             image.onload = function () {
                 context.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw the image onto the canvas
 
-                const text1 = `我在2027守衛台灣，堅持了 ${level-1} 天，`;
+                const text1 = `我在2027守衛台灣，堅持了 ${roundCount} 天，`;
                 const text2 = '全臺排名 ' + parseInt(Math.random() * 7000) + '，';
                 const text3 = '守衛台灣需要你！';
                 
