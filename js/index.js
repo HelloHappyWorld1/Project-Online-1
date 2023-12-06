@@ -18,7 +18,7 @@ function saveAsImage() {
             newCanvas.width = canvas.width;
             newCanvas.height = canvas.height;
 
-            const roundCount = 100; // Assuming you have a variable 'roundCount' defined
+            const level = 50; // Assuming you have a variable 'level' defined
 
             context.drawImage(canvas, 0, 0); // Draw the original canvas onto the new canvas
 
@@ -28,13 +28,20 @@ function saveAsImage() {
             image.onload = function () {
                 context.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw the image onto the canvas
 
-                const text = `我在2027守衛台灣，堅持了 ${level} 天，\r\n全臺排名 ${parseInt(Math.random() * 7000)}，\r\n守衛台灣需要你！`;
-                context.font = `40px Arial`;
-                context.fillStyle = `white`;
-                context.textAlign = `center`;
+                const text1 = '我在2027守衛台灣，堅持了 ' + level + ' 天，';
+                const text2 = '全臺排名 ' + parseInt(Math.random() * 7000) + '，';
+                const text3 = '守衛台灣需要你！';
+                
+                context.font = '40px Arial';
+                context.fillStyle = 'white';
+                context.textAlign = 'center';
                 const centerX = newCanvas.width / 2;
-                const centerY = newCanvas.height /2;
-                context.fillText(text, centerX, centerY);
+                const startY = newCanvas.height / 2 - 40; // Initial starting position for the text
+
+                // Display each line of text separately
+                context.fillText(text1, centerX, startY);
+                context.fillText(text2, centerX, startY + 50); // Adjust line spacing as needed
+                context.fillText(text3, centerX, startY + 100); // Adjust line spacing as needed
 
                 var imageData = newCanvas.toDataURL("image/png");
                 var a = document.createElement('a');
