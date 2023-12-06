@@ -121,6 +121,16 @@
     grid-row: 3;
 }
 
+#shareText {
+    position: absolute;
+    inset: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 72px;
+    -webkit-text-stroke: 3px black;
+    opacity: 0.5;
+}
 
 
 
