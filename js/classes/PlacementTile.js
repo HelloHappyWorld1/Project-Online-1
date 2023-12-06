@@ -34,7 +34,7 @@ class PlacementTile {
                 this.size,
             )
             let image2 = new Image()
-            image2.src = "img/tankAmerican.png"
+            image2.src = `img/prepare3/${roundCount}.png`;
             c.drawImage(
                 image2,
                 this.position.x,

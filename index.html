@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <head>
-    <title>Tower Defense</title>
+    <title>2027</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <link rel="icon" href="game.png" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preload" href="img/prepare1/1.png">
+<link rel="preload" href="img/prepare1/2.png">
+<link rel="preload" href="img/prepare1/3.png">
+<link rel="preload" href="img/prepare1/4.png">
+<link rel="preload" href="img/prepare1/5.png">
+<link rel="preload" href="img/prepare1/6.png">
+<link rel="preload" href="img/prepare2/1.png">
+<link rel="preload" href="img/prepare2/2.png">
+<link rel="preload" href="img/prepare2/3.png">
+<link rel="preload" href="img/prepare2/4.png">
+<link rel="preload" href="img/prepare2/5.png">
+<link rel="preload" href="img/prepare2/6.png">
+<link rel="preload" href="img/prepare3/1.png">
+<link rel="preload" href="img/prepare3/2.png">
+<link rel="preload" href="img/prepare3/3.png">
+<link rel="preload" href="img/prepare3/4.png">
+<link rel="preload" href="img/prepare3/5.png">
+<link rel="preload" href="img/prepare3/6.png">
+<link rel="preload" href="img/prepare4/1.png">
+<link rel="preload" href="img/prepare4/2.png">
+<link rel="preload" href="img/prepare4/3.png">
+<link rel="preload" href="img/prepare4/4.png">
+<link rel="preload" href="img/prepare4/5.png">
+<link rel="preload" href="img/prepare4/6.png">
 <link
         href="https://fonts.googleapis.com/css2?family=Changa+One&display=swap"
         rel="stylesheet"
 />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 <style>
     body {
         background-color: black;
@@ -18,30 +43,46 @@
     }
 </style>
 
-<div style="position: relative; display: inline-block">
+<div id="forScreenShot" style="position: relative; display: inline-block">
     <canvas></canvas>
+
+    <div id="endScreen" style="
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      align-items: center;
+      justify-content: center;
+      font-size: 243px;
+      color: white;
+      -webkit-text-stroke: 3px black;
+      display: none;">
+        <img id="endImage" src="img/prepare4/1.png" alt="End of Level Image">
+    </div>
 
     <div
             id="subsidy"
             style="
       position: absolute;
       top: 0;
-      bottom: 0;
+      bottom: 0px;
       left: 0;
-      right: 0;
+      right: 0px;
+	  width:2200px;
+      height:1450px;
       display: none;
       align-items: center;
       justify-content: center;
-      font-size: 75px;
+      font-size: 45px;
       font-family: Arial,serif;
       color: #efe2e2;
       font-weight: bold;
       text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
     "
     >
-        阿共打過來了怎麼辦？
+        2027 - 點擊開始
     </div>
-
 
     <div
             id="gameOver"
@@ -103,7 +144,7 @@
                 />
             </svg>
 
-            <div id="coins">50 / 1000 億新台幣</div>
+            <div id="coins">50 億新台幣</div>
         </div>
         <div style="display: flex; align-items: center">
             <svg

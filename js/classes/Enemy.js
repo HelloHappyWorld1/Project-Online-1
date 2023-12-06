@@ -1,13 +1,13 @@
 class Enemy extends Sprite {
-    constructor({position = {x: 0, y: 0}}, speed) {
+    constructor({position = {x: 0, y: 0}}, speed, roundCount) {
         super({
             position,
-            imageSrc: 'img/jDqAkOOlvb.png',
+            imageSrc: `img/prepare1/${roundCount}.png`,
             frames: {
                 max: 7
             }
         })
-        this.speed = speed
+        this.speed = speed;
         this.position = position
         this.width = 75
         this.height = 75

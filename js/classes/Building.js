@@ -1,8 +1,8 @@
 class Building extends Sprite {
-    constructor({position = {x: 0, y: 0}}) {
+    constructor({position = {x: 0, y: 0}}, roundCount) {
         super({
             position,
-            imageSrc: './img/tankAmerican.png',
+            imageSrc: `img/prepare3/${roundCount}.png`,
             frames: {
                 max: 19
             },

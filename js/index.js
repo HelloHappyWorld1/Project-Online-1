@@ -1,41 +1,77 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
-const targetScore = 1000
+const targetScore = 9999999999999
 let flag = false
 let score = 0
 let peopleSFundraising = 0;
 let randomNumbers = generateRandomNumbers();
+let roundCount = 0;
+let attackPower = 25;
+let returnCost = 0;
+
+function saveAsImage() {
+    var element = document.getElementById('forScreenShot');
+    element.addEventListener('click', function () {
+        html2canvas(element).then(function (canvas) {
+            var newCanvas = document.createElement("canvas");
+            var context = newCanvas.getContext('2d');
+            newCanvas.width = canvas.width;
+            newCanvas.height = canvas.height;
+            
+            const text = "我在2027守衛台灣，堅持了${roundCount}天，全臺排名" + `${Math.random()},守衛台灣需要你！`;
+            context.font = '20px Arial';
+            context.fillStyle = 'black';
+            context.textAlign = 'center';
+            const centerX = newCanvas.width / 2;
+            const centerY = newCanvas.height - 15;
+            context.fillText(text, centerX, centerY);
+            
+            const image = new Image(); 
+            image.onload = function() {
+                context.drawImage(image, 0, 0); // 確保圖片已經加載完成後再畫到畫布上
+                var imageData = newCanvas.toDataURL("image/png");
+                var a = document.createElement('a');
+                a.href = imageData;
+                a.download = 'page_screenshot.png';      
+                document.body.appendChild(a);
+                a.click();   
+                document.body.removeChild(a);
+            };
+            image.src = 'img/share.png';
+            image.crossOrigin = "Anonymous";   
+        });
+    });
+}
+
+
 
 function generateRandomNumbers() {
     const numbers = [];
-
-    // Generate a random number between 40 and 70
     const randomNum1 = Math.floor(Math.random() * (70 - 40 + 1)) + 40;
-    numbers.push("總計： " + randomNum1.toString() + "%<br>台積電、鴻海、聯發科、台塑化被破壞，預計10年內完成重建，請民眾踴躍募捐");
+    numbers.push("總計： " + randomNum1.toString() + "%<br>台灣全境被破壞，預計10年內完成重建，請民眾踴躍募捐");
 
-    // Generate a random number between 300 and 1000 and append "億美金" peopleSFundraising
+
     const randomNum2 = Math.floor(Math.random() * (1000 - 300 + 1)) + 300;
     numbers.push("總計： " + peopleSFundraising.toString() + `億美金<br>您捐贈了${Math.floor(peopleSFundraising / 0.23) * 60}元新台幣`);
 
-    // Generate a random number between 5 and 10 and append "年GDP"
+
     const randomNum3 = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
     numbers.push("總計： " + randomNum3.toString() + "年GDP");
 
-    // Generate a random number between 90000000 and 200000000
+
     const randomNum4 = Math.floor(Math.random() * (200000000 - 90000000 + 1)) + 90000000;
     numbers.push("總計： " + randomNum4.toString());
 
-    // Generate a random number between 500000 and 2000000
+
     const randomNum5 = Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000;
     numbers.push("總計： " + randomNum5.toString() + "人<br>有淚水濕透的母親，失去親人的孤兒和痛苦的哀號；每一個數字都代表著一個生命的熄滅，一個家庭的破碎，以及無數人心中永遠無法彌補的傷痛");
 
-    // Generate a random number between 300 and 700 and append "%"
+
     const randomNum6 = Math.floor(Math.random() * (700 - 300 + 1)) + 300;
     const result = Math.round((randomNum6 / 2300) * 100);
     const resultFriend = Math.floor(result / 100 * 400);
     const resultFamily = Math.floor(result / 100 * 20);
     numbers.push("總計： " + randomNum6.toString() + "萬<br>" + `台北約${result}%的居民失業<br>您身邊的朋友有${resultFriend}人失業<br>您的親人有${resultFamily}人失業`);
-    // 你身邊的朋友有400*x人失踪，你的親人有20*x人失踪。
 
     return numbers;
 }
@@ -56,7 +92,6 @@ for (let i = 0; i < placementTilesData.length; i += 20) {
 
 const placementTiles = []
 
-// 可建設城堡的地方
 placementTilesData2D.forEach((row, y) => {
     row.forEach((symbol, x) => {
         if (symbol === 14) {
@@ -74,17 +109,14 @@ placementTilesData2D.forEach((row, y) => {
 
 const image = new Image()
 
-// 設置背景加載時觸發的事件
 image.onload = () => {
     animate()
 }
 
-// 設置背景圖
-image.src = 'img/satellite.png'
+image.src = 'img/prepare2/1.png'
 
 const enemies = []
 
-// 生成敵人
 function spawnEnemies(spawnCount) {
     enemiesFlag = true
     for (let i = 1; i < spawnCount + 1; i++) {
@@ -92,12 +124,12 @@ function spawnEnemies(spawnCount) {
         enemies.push(
             new Enemy({
                 position: {x: waypoints[0].x - xOffset, y: waypoints[0].y}
-            }, enemySpeed)
+            }, enemySpeed, roundCount)
         )
     }
 }
 
-const buildings = []
+let buildings = []
 let activeTile = undefined
 let enemyCount = 3
 let enemySpeed = 1.7
@@ -106,9 +138,7 @@ let coins = 50
 
 const explosions = []
 let enemiesFlag = true
-// spawnEnemies(enemyCount)
 
-// 勝利或結束後彈出的窗口，即戰損報告
 
 let flag2 = false
 
@@ -120,20 +150,18 @@ function win2Draw() {
         return; // Exit the function if the element already exists
     }
 
-    // Create the myDiv element and its children
     const divElement = document.createElement('div');
     divElement.id = 'myDiv';
     divElement.classList.add('grid-container');
 
     const firstRowElement = document.createElement('div');
-    firstRowElement.textContent = '戰損報告';
+    firstRowElement.textContent = '戰損報告 - 點擊分享';
     firstRowElement.id = 'firstRow';
     divElement.appendChild(firstRowElement);
 
     let describe = ["損毀建築", "軍費開支", "經濟損失", "消耗彈藥", "傷亡人數", "失業人口", "破碎家庭"]
     let index = 0;
 
-    // 損毀建築
     const childElement11 = document.createElement('div');
     childElement11.id = 'row1col1';
     childElement11.classList.add('child');
@@ -152,7 +180,6 @@ function win2Draw() {
     divElement.appendChild(childElement11);
     index++;
 
-    // 軍費開支
     const childElement12 = document.createElement('div');
     childElement12.id = 'row1col2';
     childElement12.classList.add('child');
@@ -170,49 +197,11 @@ function win2Draw() {
     childElement12.appendChild(textBelowElement12);
     divElement.appendChild(childElement12);
     index++;
-
-    // // 經濟損失
-    // const childElement21 = document.createElement('div');
-    // childElement21.id = 'row2col1';
-    // childElement21.classList.add('child');
-    // const imgElement21 = document.createElement('img');
-    // imgElement21.src = 'img/Partition21.png';
-    // imgElement21.classList.add('image');
-    // childElement21.appendChild(imgElement21);
-    // const textElement21 = document.createElement('div');
-    // textElement21.textContent = '' + randomNumbers[index];
-    // textElement21.classList.add('text-right');
-    // childElement21.appendChild(textElement21);
-    // const textBelowElement21 = document.createElement('div');
-    // textBelowElement21.textContent = describe[index];
-    // textBelowElement21.classList.add('text-below');
-    // childElement21.appendChild(textBelowElement21);
-    // divElement.appendChild(childElement21);
-    // index++;
-    //
-    // // 消耗彈藥
-    // const childElement22 = document.createElement('div');
-    // childElement22.id = 'row2col2';
-    // childElement22.classList.add('child');
-    // const imgElement22 = document.createElement('img');
-    // imgElement22.src = 'img/Partition22.png';
-    // imgElement22.classList.add('image');
-    // childElement22.appendChild(imgElement22);
-    // const textElement22 = document.createElement('div');
-    // textElement22.textContent = '' + randomNumbers[index];
-    // textElement22.classList.add('text-right');
-    // childElement22.appendChild(textElement22);
-    // const textBelowElement22 = document.createElement('div');
-    // textBelowElement22.textContent = describe[index];
-    // textBelowElement22.classList.add('text-below');
-    // childElement22.appendChild(textBelowElement22);
-    // divElement.appendChild(childElement22);
-    // index++;
     index++;
     index++;
 
 
-    // 傷亡人數
+
     const childElement31 = document.createElement('div');
     childElement31.id = 'row3col1';
     childElement31.classList.add('child');
@@ -231,7 +220,7 @@ function win2Draw() {
     divElement.appendChild(childElement31);
     index++;
 
-    // 失業人口
+
     const childElement32 = document.createElement('div');
     childElement32.id = 'row3col2';
     childElement32.classList.add('child');
@@ -250,53 +239,68 @@ function win2Draw() {
     divElement.appendChild(childElement32);
 
 
-    // Insert the myDiv element before the canvasLayer element
     const canvasLayer = document.querySelector('body > div:nth-child(1) > canvas');
-    canvasLayer.parentNode.insertBefore(divElement, canvasLayer);
+    canvasLayer.parentNode.insertBefore(divElement, canvasLayer); 
+    saveAsImage();
 }
 
 
-// 顯示文字
+
+
+
 function showSubsidyText() {
     var subsidyText = document.getElementById("subsidy");
     subsidyText.style.display = "flex";
+
+    var endScreenDiv = document.getElementById("endScreen");
+    function endLevel() {
+        endScreenDiv.style.display = "block";
+    }
     if (level !== 1) {
         peopleSFundraising += 50 * level;
-        console.log(level)
-        console.log(peopleSFundraising)
+        endLevel();
     }
-// 修改文本內容
+
 }
 
 let level = 1;
-
-// 隱藏文字
 function hideSubsidyText() {
-    var subsidyText = document.getElementById("subsidy");
-    subsidyText.style.display = "none";
-    subsidyText.style.fontSize = "32px"; // 設置字體大小為16像素
-    var tip = ["民眾募捐" + (50 * (level + 1)).toString() + "億新台幣，因局勢緊張武器提價100%", "經多次募捐，民眾資金匱乏，政府秘密將故宮博物院文物贈送美國，換取美式武器"];
-    if (50 * (level + 1) > 150) {
-        subsidyText.innerHTML = tip[1];
-    } else {
-        subsidyText.innerHTML = tip[0];
+    var endScreenDiv = document.getElementById("endScreen");
+    var endImage = document.getElementById("endImage");
+    function nextLevel() {
+        endScreenDiv.style.display = "none";
+        var subsidyText = document.getElementById("subsidy");
+        subsidyText.style.display = "none";
+        subsidyText.style.fontSize = "32px"; 
+        subsidyText.innerHTML = "點擊進入下一關";
+        endImage.src = `img/prepare4/${roundCount}.png`;
+        console.log(`nextLevel:${roundCount},${level}`);
+    }
+    function handleClick() {
+        const element2 = document.getElementById('forScreenShot');
+        element2.removeEventListener('click', handleClick);
+        nextLevel();
+        if (enemies.length === 0) {
+            spawnEnemies(enemyCount);
+        }
     }
 
-
+    const element = document.getElementById('forScreenShot');
+    element.addEventListener('click', handleClick);
+    console.log(level)
     if (level !== 1) {
-        // console.log(level)
+        console.log(level)
         coins += 50 * level;
-        // currentCost *= 2
         document.querySelector('#currentCost').innerHTML = "美式武器售價" + currentCost.toString() + " 億新台幣"
-        document.querySelector('#coins').innerHTML = coins.toString() + " / " + targetScore.toString() + " 億新台幣"
+        document.querySelector('#coins').innerHTML = coins.toString() + " 億新台幣"
     }
 }
 
 
-showSubsidyText()
+
 setTimeout(function () {
     hideSubsidyText();
-}, 3000);
+}, 2000);
 
 let isRoadVisible = true;
 
@@ -354,14 +358,14 @@ function animate() {
             enemies.splice(i, 1)
             document.querySelector('#hearts').innerHTML = hearts
 
-            if (hearts <= 0) {
+            if (hearts <= 0 || roundCount >= 7) {
                 flag = true
                 image.src = 'img/ruins.jpg'
                 cancelAnimationFrame(animationId)
                 document.querySelector('#gameOver').style.display = 'flex'
             }
-            if (hearts <= 0) {
-                console.log('game over')
+            if (hearts <= 0 || roundCount >= 7) {
+                // console.log('game over')
                 cancelAnimationFrame(animationId)
                 document.querySelector('#gameOver').style.display = 'flex'
                 win2Draw()
@@ -384,17 +388,27 @@ function animate() {
 
 
     if (enemies.length === 0 && enemiesFlag) {
-        enemiesFlag = false
-        over()
-        enemyCount += 2
-        enemySpeed += 0.3
-
+        enemiesFlag = false;
+        over();
+        enemyCount += 1;
+        enemySpeed += 0.2;
+        roundCount += 1;
+        // activeTile.isOccupied = false
+        image.src = `img/prepare2/${roundCount}.png`;
+        coins += returnCost*3;
+        returnCost = 0;
+        cancelAnimationFrame(animationId)
+        buildings = []
+        if (roundCount>=3 && roundCount<=6) {
+            attackPower -= 5;
+            enemyCount += 1;
+        }
+        enemyCount = Math.ceil(enemyCount * 1.3);
         showSubsidyText()
         setTimeout(function () {
             hideSubsidyText();
-            spawnEnemies(enemyCount);
-            level += 1
-        }, 3000);
+            level += 1;
+        }, 1000);
 
     }
 
@@ -427,7 +441,7 @@ function animate() {
             const distance = Math.hypot(xDifference, yDifference)
 
             if (distance < projectile.enemy.radius + projectile.radius) {
-                projectile.enemy.health -= 20
+                projectile.enemy.health -= attackPower
                 if (projectile.enemy.health <= 0) {
                     const enemyIndex = enemies.findIndex((enemy) => {
                         return projectile.enemy === enemy
@@ -443,7 +457,7 @@ function animate() {
                             document.querySelector('#gameOver').style.display = 'flex'
                         }
                         if (coins >= targetScore) {
-                            console.log('game over')
+                            // console.log('game over')
                             cancelAnimationFrame(animationId)
                             document.querySelector('#gameOver').style.display = 'flex'
                             win2Draw()
@@ -473,20 +487,25 @@ const mouse = {
 
 let currentCost = 10;
 canvas.addEventListener('click', (event) => {
+    if (activeTile.roundCount !== roundCount) {
+        activeTile.isOccupied = false;
+    }
     if (activeTile && !activeTile.isOccupied && coins - currentCost >= 0) {
-        coins -= currentCost
-        currentCost *= 2
+        coins -= currentCost;
+        returnCost += Math.ceil(currentCost*0.9);
+        currentCost += 15 * roundCount;
         document.querySelector('#currentCost').innerHTML = "美式武器售價" + currentCost.toString() + " 億新台幣"
-        document.querySelector('#coins').innerHTML = coins.toString() + " / " + targetScore.toString() + " 億新台幣"
+        document.querySelector('#coins').innerHTML = coins.toString() + " 億新台幣"
         buildings.push(
             new Building({
                 position: {
                     x: activeTile.position.x,
                     y: activeTile.position.y
                 }
-            })
+            },roundCount)
         )
-        activeTile.isOccupied = true
+        activeTile.isOccupied = true;
+        activeTile.roundCount = roundCount;
         buildings.sort((a, b) => {
             return a.position.y - b.position.y
         })

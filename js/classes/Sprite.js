@@ -31,8 +31,7 @@ class Sprite {
         if (flag) {
             // do nothing
         } else {
-
-            if (this.image.src.endsWith("img/jDqAkOOlvb.png")) {
+            if (this.image.src.includes("img/prepare1")) {
                 c.drawImage(
                     this.image,
                     this.position.x + this.offset.x,
@@ -40,7 +39,7 @@ class Sprite {
                     75,
                     75,
                 )
-            } else if (this.image.src.endsWith("img/tankAmerican.png")) {
+            } else if (this.image.src.includes("img/prepare3")) {
                 c.drawImage(
                     this.image,
                     this.position.x + this.offset.x,
