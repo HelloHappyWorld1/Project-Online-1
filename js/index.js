@@ -28,7 +28,7 @@ function saveAsImage() {
             
             const image = new Image(); 
             image.onload = function() {
-                context.drawImage(image, 0, 0, newCanvas.width, newCanvas.height); // 確保圖片已經加載完成後完整畫到畫布上
+                context.drawImage(image, 0, 0, canvas.width, canvas.height); // 將圖片繪製在整個畫布上
                 var imageData = newCanvas.toDataURL("image/png");
                 var a = document.createElement('a');
                 a.href = imageData;
