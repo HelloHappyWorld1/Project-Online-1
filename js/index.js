@@ -28,8 +28,7 @@ function saveAsImage() {
             image.onload = function () {
                 context.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw the image onto the canvas
 
-                const text = `我在2027守衛台灣，堅持了 ${level} 天，\n全臺排名 ${parseInt(Math.random() * 7000)}，\n守衛台灣需要你！`;;
-                context.style="white-space:pre-line";
+                const text = `我在2027守衛台灣，堅持了 ${level} 天，\r\n全臺排名 ${parseInt(Math.random() * 7000)}，\r\n守衛台灣需要你！`;
                 context.font = `40px Arial`;
                 context.fillStyle = `white`;
                 context.textAlign = `center`;
