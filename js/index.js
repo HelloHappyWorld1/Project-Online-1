@@ -17,10 +17,12 @@ function saveAsImage() {
             var context = newCanvas.getContext('2d');
             newCanvas.width = canvas.width;
             newCanvas.height = canvas.height;
-            const text = document.createElement('div');
-            text.textContent = '我在2027守衛台灣，堅持了'+${roundCount}+'天，全臺排名' + ${Math.random()}+',守衛台灣需要你！';
-            text.id = 'firstRow';
-            //const text = "我在2027守衛台灣，堅持了${roundCount}天，全臺排名" + `${Math.random()},守衛台灣需要你！`;
+
+            const roundCount = 100; // Assuming you have a variable 'roundCount' defined
+
+            const text = `我在2027守衛台灣，堅持了 ${roundCount} 天，全臺排名 ${Math.random()}，守衛台灣需要你！`;
+
+            context.drawImage(canvas, 0, 0); // Draw the original canvas onto the new canvas
 
             context.font = '20px Arial';
             context.fillStyle = 'black';
@@ -28,20 +30,20 @@ function saveAsImage() {
             const centerX = newCanvas.width / 2;
             const centerY = newCanvas.height - 15;
             context.fillText(text, centerX, centerY);
-            
-            const image = new Image(); 
-            image.onload = function() {
-                context.drawImage(image, 0, 0, canvas.width, canvas.height); // 將圖片繪製在整個畫布上
+
+            const image = new Image();
+            image.onload = function () {
+                context.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw the image onto the canvas
                 var imageData = newCanvas.toDataURL("image/png");
                 var a = document.createElement('a');
                 a.href = imageData;
-                a.download = 'page_screenshot.png';      
+                a.download = 'page_screenshot.png';
                 document.body.appendChild(a);
-                a.click();   
+                a.click();
                 document.body.removeChild(a);
             };
             image.src = 'img/share.png';
-            image.crossOrigin = "Anonymous";   
+            image.crossOrigin = "Anonymous";
         });
     });
 }
