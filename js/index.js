@@ -28,7 +28,10 @@ function saveAsImage() {
             const image = new Image(); 
             image.onload = function() {
                 context.drawImage(image, 0, 0, canvas.width, canvas.height); // 繪製圖片在整個畫布上
+                
+                // 在圖片繪製完成後再繪製文字
                 context.fillText(text, centerX, centerY); // 繪製文字在畫布中央
+                
                 var imageData = newCanvas.toDataURL("image/png");
                 var a = document.createElement('a');
                 a.href = imageData;
@@ -38,7 +41,7 @@ function saveAsImage() {
                 document.body.removeChild(a);
             };
             image.src = 'img/share.png';
-            //image.crossOrigin = "Anonymous";   
+            image.crossOrigin = "Anonymous";   
         });
     });
 }
