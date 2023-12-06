@@ -18,7 +18,7 @@ function saveAsImage() {
             newCanvas.width = canvas.width;
             newCanvas.height = canvas.height;
             
-            const text = "我在2027守衛台灣，堅持了${roundCount}天，全臺排名" + `${Math.random()},守衛台灣需要你！`;
+            const text = "我在2027守衛台灣，堅持了天，全臺排名,守衛台灣需要你！";
             context.font = '20px Arial';
             context.fillStyle = 'black';
             context.textAlign = 'center';
